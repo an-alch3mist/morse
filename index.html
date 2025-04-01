@@ -30,14 +30,14 @@
 
 <h1>-- --- •-• ••• •</h1>
 <div class="grid-1">
-	<input class="input-text lang_eng" type="text" placeholder="enter the text here...">
+	<input class="input-text lang_eng" type="text" placeholder="enter the text here..." title="the input text to be translated later goes here">
 	<input class="pass-btn translate-btn" type="button" 	value="submit" 	name="">
 </div>
 <div class="grid-2">
     <input class="input-text dit" type="text" placeholder="dit •">
     <input class="input-text dah" type="text" placeholder="dah —">
-    <input class="input-text seperator-l" type="text" placeholder="/ sep letter">
-    <input class="input-text seperator-w" type="text" placeholder="// sep word">
+    <input class="input-text seperator-l" type="text" placeholder="/ sep letter" title = "character for seperation between letter">
+    <input class="input-text seperator-w" type="text" placeholder="// sep word" title = "character seperation between word">
 </div>
 
 <div class="input-container container">
@@ -114,7 +114,6 @@ async function typewriter()
     typewriter_animate_text(document.querySelector(".seperator-l"), "placeholder");
     typewriter_animate_text(document.querySelector(".seperator-w"), "placeholder");
     // typewriter_animate_text(document.querySelector(".morse-text"), "placeholder");
-
 }
 typewriter();
 
@@ -148,7 +147,7 @@ const morseCodeMap = new Map([
 
 console.log(morseCodeMap);
 
-query(".translate-btn").onclick = function(e)
+function translate()
 {
     console.log("copy");
     query(".copy-btn").setAttribute("value", "copy");
@@ -164,8 +163,8 @@ query(".translate-btn").onclick = function(e)
     let sep_char = query(".seperator-l").value; if(sep_char == '') sep_char = "/";
     let sep_word = query(".seperator-w").value; if(sep_word == '') sep_word = "//";
 
-    sep_char = ` ${sep_char} `;
-    sep_word = ` ${sep_word} `;
+    if(sep_char[0] != ' ') sep_char = ` ${sep_char} `;
+    if(sep_word[0] != ' ') sep_word = ` ${sep_word} `;
 
     let str = '';
     lang_eng = lang_eng.replace(/\s+/g, ' ').trim();
@@ -196,6 +195,20 @@ query(".translate-btn").onclick = function(e)
     });
 
     query(".morse-text").value = str;
+}
+
+query(".lang_eng").addEventListener('keydown', function(event) 
+{
+    if (event.key === 'Enter') 
+    {
+        translate()
+    }
+});
+
+
+query(".translate-btn").onclick = function(e)
+{
+    translate();
 }
 
 query(".copy-btn").onclick = function(e)
