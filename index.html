@@ -159,7 +159,7 @@ function translate()
     }
 
     let dit = query(".dit").value; if(dit == '') dit = "•";
-    let dah = query(".dah").value; if(dah == '') dah = "—";
+    let dah = query(".dah").value; if(dah == '') dah = "-";
     let sep_char = query(".seperator-l").value; if(sep_char == '') sep_char = "/";
     let sep_word = query(".seperator-w").value; if(sep_word == '') sep_word = "//";
 
@@ -170,7 +170,6 @@ function translate()
     lang_eng = lang_eng.replace(/\s+/g, ' ').trim();
     console.log(lang_eng.split(' '));
     lang_eng.split(' ').forEach((element,ei) => {
-
         for(let i = 0; i < element.length; i += 1)
         {
             let char = element[i].toLowerCase();
