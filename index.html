@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>morse translator</title>
+    <meta name="title" property="og:title" content="English to Morse Translate">
+    <meta name="Keywords" content="Morse Code, English to Morse, Translator, Custom Separator, Dit, Dah, Code Conversion, Morse Code Generator, Learn Morse Code, Text to Morse,">
+    <meta name="Description" content="convert English text to Morse code with customizable separators and the option to adjust the representation of 'dit' and 'dah'.">
+    <!-- <meta property="og:image" content=""> -->
+    <!-- <meta property="og:image:type" content="image/png"> -->
+    <!-- <meta property="og:image:width" content="400"> -->
+    <!-- <meta property="og:image:height" content="200"> -->
+    <meta property="og:description" content="Translate English text to Morse code with custom separators and adjustable 'dit' and 'dah' values.">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+<!-- <div class="input-container container">
+	<input class="input-text lang_eng" type="text" placeholder="enter the text">
+	<input class="pass-btn translate-btn" type="button" 	value="morse" 	name="">
+</div> -->
+<!-- <div class="input-container container">
+	<input class="input-text dit" type="text" placeholder="dit •">
+    <input class="input-text dah" type="text" placeholder="dah —">
+</div>
+<div class="input-container container">
+	<input class="input-text seperator-l" type="text" placeholder="/sep letter">
+    <input class="input-text seperator-w" type="text" placeholder="//sep word">
+</div> -->
+
+<h1>-- --- •-• ••• •</h1>
+<div class="grid-1">
+	<input class="input-text lang_eng" type="text" placeholder="enter the text">
+	<input class="pass-btn translate-btn" type="button" 	value="morse" 	name="">
+</div>
+<div class="grid-2">
+    <input class="input-text dit" type="text" placeholder="dit •">
+    <input class="input-text dah" type="text" placeholder="dah —">
+    <input class="input-text seperator-l" type="text" placeholder="/ sep letter">
+    <input class="input-text seperator-w" type="text" placeholder="// sep word">
+</div>
+
+<div class="input-container container">
+    <textarea rows="10" class="input-text morse-text" type="text" placeholder="here is the morse...."></textarea>
+    <input class="pass-btn copy-btn" type="button" 	value="copy" 	name="">
+</div>
+
+
+<script type="text/javascript">
+	
+// effect //
+function typewriter_animate_text(S, attr = "placeholder", wait = 30)
+	{
+		let str;
+		if(attr == '')
+            str = S.innerHTML;
+        else
+            str = S.getAttribute(attr);
+
+		let index = 0;
+		let _interval = setInterval
+		(
+			function()
+			{
+				if(index >= str.length)
+				{
+					S.innerHTML = str;
+					clearInterval(_interval);
+				}
+
+				let new_str = "";
+				let rand_chars = str + "MORSE_-•";
+
+				for(let i0 = 0 ; i0 < str.length; i0 += 1)
+				{
+					if(i0 <= index)
+					{
+						new_str += str[i0];
+					}
+					else
+					{
+						new_str += rand_chars[Math.floor(Math.random() * rand_chars.length)];
+					}
+					//
+				}
+                if(attr == '')
+                    S.innerHTML = new_str;
+				else
+                    S.setAttribute(attr , new_str);
+
+
+				// let di = lerp(0.3 , 2 , index / str.length);
+				index += 1.2;
+			}
+			,wait
+		);
+
+	}
+
+// effect //
+function delay(ms) 
+{
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function typewriter()
+{
+    // typewriter_animate_text(document.querySelector("h1"), '', 10);
+    // await delay(1000);
+    typewriter_animate_text(document.querySelector(".input-text"), "placeholder");
+    await delay(500);
+    typewriter_animate_text(document.querySelector(".dit"), "placeholder");
+    typewriter_animate_text(document.querySelector(".dah"), "placeholder");
+    typewriter_animate_text(document.querySelector(".seperator-l"), "placeholder");
+    typewriter_animate_text(document.querySelector(".seperator-w"), "placeholder");
+    // typewriter_animate_text(document.querySelector(".morse-text"), "placeholder");
+
+}
+typewriter();
+
+
+function copytxt(str) 
+{
+    navigator.clipboard.writeText(str);
+}
+
+function query(str)
+{
+    return document.querySelector(str);
+}
+
+</script>
+
+<script>
+const morseCodeMap = new Map([
+    ['a', '.-'], ['b', '-...'], ['c', '-.-.'], ['d', '-..'], ['e', '.'],
+    ['f', '..-.'], ['g', '--.'], ['h', '....'], ['i', '..'], ['j', '.---'],
+    ['k', '-.-'], ['l', '.-..'], ['m', '--'], ['n', '-.'], ['o', '---'],
+    ['p', '.--.'], ['q', '--.-'], ['r', '.-.'], ['s', '...'], ['t', '-'],
+    ['u', '..-'], ['v', '...-'], ['w', '.--'], ['x', '-..-'], ['y', '-.--'],
+    ['z', '--..'], ['1', '.----'], ['2', '..---'], ['3', '...--'], ['4', '....-'],
+    ['5', '.....'], ['6', '-....'], ['7', '--...'], ['8', '---..'], ['9', '----.'],
+    ['0', '-----'], ['.', '.-.-.-'], [',', '--..--'], ['?', '..--..'], ["'", '.----.'],
+    ['!', '-.-.--'], ['/', '-..-.'], ['(', '-.--.'], [')', '-.--.-'], ['&', '.-...'],
+    [':', '---...'], [';', '-.-.-.'], ['=', '-...-'], ['+', '.-.-.'], ['-', '-....-'],
+    ['_', '..--.-'], ['"', '.-..-.'], ['$', '...-..-'], ['@', '.--.-.'], [' ', '/']
+]);
+
+console.log(morseCodeMap);
+
+query(".translate-btn").onclick = function(e)
+{
+    console.log("copy");
+    query(".copy-btn").setAttribute("value", "copy");
+
+    let lang_eng = query(".lang_eng").value;
+    if(lang_eng == '')
+    {
+        return;
+    }
+
+    let dit = query(".dit").value; if(dit == '') dit = "•";
+    let dah = query(".dah").value; if(dah == '') dah = "—";
+    let sep_char = query(".seperator-l").value; if(sep_char == '') sep_char = "/";
+    let sep_word = query(".seperator-w").value; if(sep_word == '') sep_word = "//";
+
+    sep_char = ` ${sep_char} `;
+    sep_word = ` ${sep_word} `;
+
+    let str = '';
+    lang_eng = lang_eng.replace(/\s+/g, ' ').trim();
+    console.log(lang_eng.split(' '));
+    lang_eng.split(' ').forEach((element,ei) => {
+
+        for(let i = 0; i < element.length; i += 1)
+        {
+            let char = element[i].toLowerCase();
+            if(morseCodeMap.has(char))
+            {
+                let morse = morseCodeMap.get(char);
+                morse = morse.replace(/\./g, dit);
+                morse = morse.replace(/\-/g, dah);
+                str += morse;
+            }
+            else
+            {
+                str += '?';
+            }
+            if(i != element.length - 1)
+                str += sep_char; 
+        }
+        if(ei != lang_eng.split(' ').length - 1);
+        {
+            str += sep_word;
+        }
+    });
+
+    query(".morse-text").value = str;
+}
+
+query(".copy-btn").onclick = function(e)
+{
+    console.log("copy");
+    query(".copy-btn").setAttribute("value", "copied");
+    setTimeout(function()
+    {
+        query(".copy-btn").setAttribute("value", "copy again");
+    }, 500);
+
+
+    let str = query(".morse-text").value;
+    copytxt('\`' + str + '\`');
+}
+</script>
+
+</body>
+</html>
